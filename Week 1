@@ -1,0 +1,68 @@
+; Numbers and number arithmetic
+(+ 2 2)
+(* 2 3)
+(/ 42 2)
+(- 4 2)
+(* pi 2)
+
+;built-in functions
+(remainder 9 4)
+(abs -5)
+(sqrt 2)
+(random 42)
+
+;nested expresions
+(* 3 (+ (/ 4 2) (- 4 2)))
+(random (+ (expt (sqr 2) (/ 9 3)) 36))
+
+
+;define 
+(define MYPI 3.14)
+(define radius 10)
+(* MYPI (sqr radius))
+
+(define x 3)
+(define y 4)
+(* x y)
+
+
+;predicates
+(integer? 4)
+(integer? 3.14)
+(even? 4)
+(odd? 2)
+(real? 3.4)
+(negative? 10)
+(positive? 10)
+
+
+;Strings and arithmetics
+(string-append  "hello" " class")
+(string-length "hello")
+(* 2 (string-length "hello"))
+(string->number "42")
+(string->number "two")
+(number->string 42)
+(string-append "I am " (number->string 42) " years old")
+(string-append (number->string 5) (number->string (string-length "hello")))
+(string->number "100")
+(string-ith "hello" 1)
+(string=? "hello" "hello")
+(string=? "hello" "class")
+
+
+
+;relational operations
+(> 2 3)
+(= 2 2)
+(<= 2 3)
+
+;boolean
+(and #true #true)
+(or (not #true) #true)
+(and (string=? "hello" "hello") (> 5 (string-length "hello")))
+
+; 
+; (above (circle 10 "solid" "red")
+;        (circle 20 "solid" "blue"))
+ 
