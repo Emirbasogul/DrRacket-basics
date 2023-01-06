@@ -1,0 +1,172 @@
+;Predicates:
+(number? 42)
+(integer? 42)
+(real? 42)
+(integer? pi)
+(real? pi)
+(negative? 42)
+(negative? -42)
+(zero? 100)
+
+
+;************************************************************************************************************
+;Aritmetic on Strings
+(string-length "ali")
+(string-ith "hello" 2)
+(string-ith "ali" (sqrt 4))
+(number->string 42)
+(string->number "42")
+(string->number "fortytwo")
+(string-length (string-append (number->string (+ 10
+                               (string-length "hello"))) " years old"))
+
+(string->number "fortytwo")
+(+ (string->number "42") 5)
+
+(substring "hello" 2 5)     ;2'den 5'e kadar yazdırıyor
+(string-ith "hello" 0)
+(string-ith "hello" 2)
+(string-ith "hello" 4)
+
+;************************************************************************************************************
+;Relational operations
+(> 2 3)
+(= 2 2)
+(<= 2 3)
+
+;Boolean
+(and #true #true)
+(or (not #true) #true)
+(and (string=? "hello" "hello") (> 5 (string-length "hello")))
+;(or (> 2 3)) ;error
+
+;************************************************************************************************************
+;Images:
+
+(circle 10 "solid" "red")
+(rectangle 10 20 "outline" "black")
+(square 50 "solid" "green")
+
+(circle (random 50) "solid" "yellow")
+(circle 100 100 (color (random 255) (random 255) (random 255)))
+(circle 100 "solid" (color (random 255) (random 255) (random 255)))
+
+
+
+(circle (random 50) ; random natural number less than some given exact natural for SIZE
+        (random 255); random natural number less than some given exact natural for transparnecy of solid/outline
+        (color (random 255) (random 255) (random 255))) ; random natural number less than some given exact natural for color
+
+
+(above 
+(square 100 "solid" "red")
+(square 200 "solid" "orange"))
+
+(beside 
+(square 100 "solid" "red")
+(square 200 "solid" "orange"))
+;************************************************************************************************************
+
+
+
+(overlay (circle 20 "solid" "blue")
+         (rectangle 10 5 "solid" "black"))
+
+(overlay (circle 20 "solid" "blue")
+         (rectangle 100 50 "solid" "black"))
+
+(define MYUFO (overlay(rectangle 200 10 "solid" "black")
+                      (circle 50 "solid" "blue")))
+
+
+;**********************************************************************************
+(image-width (rectangle 50 100 "solid" "blue"))
+(image-height (rectangle 50 100 "solid" "blue"))
+
+
+;**********************************************************************************
+
+(empty-scene 500 500)
+
+(define HEIGHT 400)
+(define WIDTH 400)
+(define MYSCN (empty-scene WIDTH HEIGHT))
+
+
+(place-image (circle 50 "solid" "red") 250 250 (empty-scene 500 500))
+
+(place-image (circle 50 "solid" "red") 250 250 MYSCN)
+
+
+(define MYCIRCLE (circle 50 "solid" "red"))
+(place-image MYCIRCLE 100 100 (empty-scene 200 200))
+
+;**********************************************************************************
+
+(place-image (overlay (rectangle 70 5 "solid" "black")(circle 20 "solid" "blue"))
+             100
+             200
+             (empty-scene 200 200))
+(place-image (overlay (rectangle 70 5 "solid" "black")(circle 20 "solid" "blue"))
+             100
+             195
+             (empty-scene 200 200))
+(place-image (overlay (rectangle 70 5 "solid" "black")(circle 20 "solid" "blue"))
+             100
+             190
+             (empty-scene 200 200))
+(place-image (overlay (rectangle 70 5 "solid" "black")(circle 20 "solid" "blue"))
+             100
+             185
+             (empty-scene 200 200))
+
+(place-image MYUFO 100 100 MYSCN)
+(place-image MYUFO 100 120 MYSCN)
+(place-image MYUFO 100 140 MYSCN)
+(place-image MYUFO 100 160 MYSCN)
+(place-image MYUFO 100 180 MYSCN)
+
+;*******************************************************************************************************************
+
+;Data definition: Number
+;Purpose: to find the square of any given number
+;Contract:  mySqr: number (x) --> number
+;Example:
+(check-expect (mySqr 2) 4)
+(check-expect (mySqr 1) 1)
+(check-expect (mySqr 1) 1)
+(check-expect (mySqr 0) 0)
+;function header:
+;(define (mySqr x) 0)
+;function:
+(define (mySqr x)
+  (* x x))
+;test:
+(mySqr 2)
+(mySqr 4)
+
+
+
+
+;Data definition: numbers
+;Purpose: to calculate the distance to origin
+;Contract: distToOrig: number(x) number(y) --> number
+;Example:
+(check-expect (distToOrig 3 4) 5)
+(check-expect (distToOrig 10 0) 10)
+;function header:
+;(define (distToOrig x y) 10)
+;function:
+(define (distToOrig x y)
+  (sqrt(+ (mySqr x)(mySqr y))))
+;   (sqrt(+ (sqr x)(sqr y))))
+;   (sqrt(+ (* x x)(* y y))))
+;    (sqrt(+ (expt x 2)(expt y 2))))
+
+;test:
+(distToOrig 3 4)
+(distToOrig 7 8)
+
+
+
+
