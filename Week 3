@@ -1,0 +1,90 @@
+;Data definition: numbers
+;Purpose: to calculate the distance to origin
+;Contract: distToOrig: number(x) number(y) --> number
+;Example:
+(check-expect (distToOrig 3 4) 5)
+(check-expect (distToOrig 10 0) 10)
+;function header:
+;(define (distToOrig x y) 10)
+;function:
+(define (distToOrig x y)
+  (sqrt(+ (sqr x)(sqr y))))
+;   (sqrt(+ (sqr x)(sqr y))))
+;   (sqrt(+ (* x x)(* y y))))
+;    (sqrt(+ (expt x 2)(expt y 2))))
+
+;test:
+(distToOrig 3 4)
+(distToOrig 7 8)
+
+
+
+;constant
+(define MYPI 3.14)
+;data definition: number
+;contract: areaOfCircle: number(r) ---> number
+;purpose: to calculate the area of circle
+
+(check-expect (areaOfCircle 10) (* 10 10 MYPI))
+(check-expect (areaOfCircle 5) 78.5)
+
+;function:
+(define (areaOfCircle r) (* MYPI r r))
+
+(areaOfCircle 10)
+(areaOfCircle 3)
+
+
+;Data deinition: numbers
+;Purpose: to find the area of ring for gven two circles
+;Contract: areaOfRing: number(r1) number(r2) ---> number
+;Example:
+(check-expect (areaOfRing 10 5)(- 314 78.5))
+
+;function:
+(define (areaOfRing r1 r2) (abs (- (areaOfCircle r2) (areaOfCircle r1))))
+;test:
+(areaOfRing 100 50)
+
+
+;--------------animation-----------
+
+;Contants:
+;width
+(define W 500)
+;height
+(define H 500)
+(define MYSCN (empty-scene W H))
+
+(define MYUFO (overlay (rectangle 60 5 "solid" "black")
+         (circle 20 "solid" "blue")))
+; 
+; (place-image  MYUFO 100 100 MYSCN)
+; (place-image  MYUFO 100 130 MYSCN)
+; (place-image  MYUFO 100 140 MYSCN)
+; (place-image  MYUFO 100 150 MYSCN)
+; 
+
+
+;data definition: number
+;purpose: to fly Ufo
+;contract: flyUfo: number(y) ---> image
+;example
+(check-expect (flyUfo 150) (place-image  MYUFO (/ W 2) 150 MYSCN))
+(check-expect (flyUfo 0) (place-image  MYUFO (/ W 2) 0 MYSCN))
+(check-expect (flyUfo 10) (place-image  MYUFO (/ W 2) 10 MYSCN))
+;function header:
+;(define (flyUfo y) MYSCN)
+;template:
+;(define (flyUfo y) (....y....))
+;function:
+(define (flyUfo y)
+  (place-image MYUFO (/ W 2) y MYSCN))
+ ;(place-image MYUFO y 100 MYSCN)) ; if you change with x coordinate
+ ;(place-image MYUFO y y MYSCN)) ; should be consistent with examples
+ ;(place-image MYUFO (/ W 2)(* 5 y) MYSCN)) ; should be consistent with examples
+ 
+
+
+(flyUfo 200)
+(animate flyUfo)
