@@ -1,0 +1,169 @@
+(define (letter fst lst signature-name)
+  (string-append
+    (opening fst)
+    "\n\n"
+    (body fst lst)
+    "\n\n"
+    (closing signature-name)))
+ 
+(define (opening fst)
+  (string-append "Dear " fst ","))
+ 
+(define (body fst lst)
+  (string-append
+   "We have discovered that all people with the" "\n"
+   "last name " lst " have won race. So, " "\n"
+   fst ", " "hurry and pick up your prize."))
+ 
+(define (closing signature-name)
+  (string-append
+   "Sincerely,"
+   "\n\n"
+   signature-name
+   "\n"))
+(letter "Matthew" "Fisler" "Felleisen")
+(write-file 'stdout (letter "Matt" "Fiss" "Fell"))
+(write-file "letter.txt" "Dear Github Users!")
+(read-file "letter.txt")
+
+
+(write-file "sample.dat" "212")
+(read-file "sample.dat")
+(write-file 'stdout "212\n")
+
+(define (C f)
+  (* 5/9 (- f 32)))
+
+(define (convert in out)
+  (write-file out
+    (string-append
+      (number->string
+        (C
+          (string->number
+            (read-file in))))
+      "\n")))
+;(read-file "sample.dat") --> "212"
+;(string->number "212") ---> 212
+;(C 212) ---> 100
+;(number->string 100) ---> "100"
+;(string-append "100" "\n") ---> "100\n"
+;(write-file output.dat "100\n")
+
+;(convert in out)
+(convert "sample.dat" "output.dat")
+
+
+;************************findMaxValue********************
+;Purpose : to find the maximum number of given two numbers
+;Data Definition: numbers
+;Contract: findMax : number(x) number(y) ---> x/y (max)
+;Example:
+(check-expect (findMax 2 3) 3)
+(check-expect (findMax 3 3) 3)
+(check-expect (findMax 3 2) 3)
+;Header:
+;(define (findMax x y) number)
+;Template:
+; (define (findMax x y)
+;   (cond
+;   ((> x y) ...)
+;   (else ...)))
+
+;Function:
+(define (findMax x y)
+  ; (cond
+;   ((> x y) x)
+;   (else y)))
+
+  (if (> x y) x y))
+
+;Testing:
+(findMax 4 10)
+(findMax 0 0)
+
+
+;************************myAbs********************
+;Purpose: to find absolute value of given number
+;Data Definition: number
+;Contract : myAbs : number --> number
+;Example:
+(check-expect (myAbs -5) 5)
+(check-expect (myAbs 0) 0)
+(check-expect (myAbs 5) 5)
+;Header:
+;(define (myAbs x) number)
+;Function:
+(define (myAbs x)
+  (cond
+  ((< x 0) (* x -1))
+  (else x)))
+ ; (if (< x 0) (* x -1) x))
+
+;Test:
+(myAbs -10)
+(myAbs 0)
+(myAbs 10)
+
+
+
+;************************sign******************************************************
+;Purpose: This sign function distinguishes three kinds of inputs:
+;those numbers that are larger than 0, those equal to 0, and those smaller than 0.
+;Depending on the input, the result of the function is positve, zero, or negative strings.
+;Data Definition: number
+;Contract : sign : number(x) ---> string
+;Example:
+(check-expect (sign -10) "Negative")
+(check-expect (sign 0) "Zero")
+(check-expect (sign 10) "Positive")
+;Header:
+;(define (sign x) string)
+;Template:
+; (define (sign x)
+;   (cond
+;   ((> x 0) ...)
+;   ((= x 0) ...)
+;   ((< x 0) ...)))
+
+;Function:
+(define (sign x)
+  (cond
+  ((> x 0) "Positive")
+  ((= x 0) "Zero")
+  ((< x 0) "Negative")))
+;Testing:
+(sign -1)
+(sign 0)
+(sign 1)
+
+;Purpose: to check the length of given string with given number.
+;If they are equal, produce #true, otherwise #false
+;Data Definiton: string, number
+;Contract:  checkStrLength : string(s) number(n) --> boolean(true/false)
+;Example:
+(check-expect (checkStrLength "hello" 5) #true)
+(check-expect (checkStrLength "hello" 4) #false)
+(check-expect (checkStrLength "cmpe111" 5) #false)
+(check-expect (checkStrLength "cmpe111" 7) #true)
+;Header:
+;(define (checkStrLength s n) boolean)
+;Template:
+; (define (checkStrLength s n)
+;   (cond
+;   (= (string-length s) n)...)
+;   (else ..))
+
+;Function:
+(define (checkStrLength s n)
+  (cond
+  ((= (string-length s) n) #true)
+  (else #false)))
+;Testing:
+(checkStrLength "CMPE111" 8)
+(checkStrLength "CMPE111" 7)
+
+
+
+  
+
+
