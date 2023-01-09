@@ -1,0 +1,90 @@
+;************************checkTG******************************************************
+;purpose: to assign a letter grade for given numeric term grade
+; 90 <= tg <= 100 ---> "A"
+; 80 <= tg <= 89 ---> "B"
+; 70 <= tg <= 79 ---> "C"
+; else ---> "F"
+;contract: checkTG: number (tg) ---> string
+(check-expect (checkTG 95) "A")
+(check-expect (checkTG 85) "B")
+(check-expect (checkTG 75) "C")
+(check-expect (checkTG 30) "F")
+;function header:
+;(define (checkTG tg) "A")
+;template:
+; (define (checkTG tg)
+;   (cond
+;    ((and (>= tg 90)(<= tg 100))...)
+;    ((and (>= tg 80)(<= tg 89))...)
+;    ((and (>= tg 90)(<= tg 79))...)
+;    (else ...)))
+
+   
+   
+(define (checkTG tg)
+  (cond
+   ((and (>= tg 90)(<= tg 100)) "A")
+   ((and (>= tg 80)(<= tg 89)) "B")
+   ((and (>= tg 70)(<= tg 79)) "C")
+   (else "F")))
+
+
+(define (checkTGv2 tg)
+  (cond
+   ((>= tg 90)  "A")
+   ((>= tg 80) "B")
+   ((>= tg 70) "C")
+   (else "F")))
+
+
+
+(checkTG 95)
+(checkTG 85)
+(checkTG 75)
+(checkTG 65)
+
+
+(checkTGv2 95)
+(checkTGv2 85)
+(checkTGv2 75)
+(checkTGv2 65)
+
+
+
+;************************one?***************
+
+;predicates
+
+(zero? 10)
+(zero? 0)
+
+
+;purpose: to check given number is equal to 1
+;contract: one? : number ---> boolean
+(check-expect (one? 1) #true)
+(check-expect (one? 10) #false)
+;function header:
+;(define (one? x) #true)
+;template:
+; (define (one? x)
+;   (if (= x 1) ... ...))
+
+
+
+(define (one? x)
+  (if (= x 1) #true #false))
+
+;we can also use as following function
+; (define (one? x)
+;   (= x 1))
+
+
+;with cond:
+; (define (one? x)
+;  (cond
+;    ((= x 1) #true)
+;    (else #false)))
+
+
+(one? 1)
+(one? 2)
