@@ -1,0 +1,275 @@
+;**********************************************************************************
+;CHECKING AND REPORTING ERRORS USING CONDITIONS 
+
+;Purpose: returns area of circle with given radius
+;Contract: areaOfCircle : number(radius) --> number(area)
+(define MYPI 3.14)
+
+(check-expect (areaOfCircle 10) (* 100 MYPI))
+(check-expect (areaOfCircle -10) (error "Cannot compute area for negative radius"))
+(check-expect (areaOfCircle 5) 78.5)
+
+;Template:
+; (define (areaOfCircle r)
+;   (cond
+;   ((<= r 0) ...)
+;   (else ...r...)))
+
+;Function:
+(define (areaOfCircle r)
+  (cond
+  ((< r 0) (error "Cannot compute area for negative radius"))
+  (else (* MYPI r r))))
+
+;Testing:
+(areaOfCircle 5)
+(areaOfCircle 10)
+(areaOfCircle -10)
+
+
+;**********************************************************************************
+;Purpose: Consider that a bank uses different interest rates depending on
+;the amount of money you borrow.
+;If the amount is less than T than the interest rate is i1, otherwise
+;the interest rate is i2 (which is smaller).
+;Design a function which takes these parameters, in addition to the
+;amount you borrow, A,
+;and returns how much your total debt will be at the end of one month.
+
+;Contract: debt : number(Amount) number(Threshold) number(interest1) number(interest2) --> number(total debt)
+(check-expect (debt 1000 5000 10 5) 1100)
+(check-expect (debt 10000 5000 10 5) 10500)
+(check-expect (debt -1000 5000 10 5) (error "Invalid for negative"))
+
+;Template
+; (define (debt amount threshold i1 i2)
+;   (cond
+;   ((< amount 0) ...)
+;   ((< amount threshold) ...)
+;   (else ...)
+
+;Function:
+(define (debt amount threshold i1 i2)
+  (cond
+  ((< amount 0) (error "Invalid for negative"))
+  ((< amount threshold) (+ amount (* amount (/ i1 100))))
+  (else (+ amount (* amount (/ i2 100))))))
+  
+;Testing:
+(debt 1000 5000 10 5)
+
+
+;**********************************************************************************
+
+;Purpose: The following function returns whether the first given number, x,
+;is between the next two, y and z.
+;Note that y may or may not be smaller than z.
+;Contract: isBetween : number(x) number(y) number(z) ---> boolean
+;Example:
+(check-expect (isBetween 10 5 20) #true)
+(check-expect (isBetween 5 10 20) #false)
+
+;Template:
+; (define (isBetween x y z)
+;   (cond
+;   ((< y z) ...)
+;   (else ...)))
+
+
+;Function:
+(define (isBetween x y z)
+  (cond
+  ((< y z) (and (>= x y) (<= x z)))
+  (else (and (>= x z) (<= x y)))))
+
+;Testing:
+(isBetween 10 5 20)
+(isBetween 1 5 20)
+(isBetween 10 20 5)
+(isBetween 1 20 5)
+
+
+;RECURSION:
+;Recursion is the programming technique which corresponds to
+;mathematical expressions of functions which refer to themselves.
+
+; Function: isBetweenRec: x,y,z: Numbers -> boolean
+; returns whether x is between y and z
+(check-expect (isBetweenRec 2 1 5) true)
+(check-expect (isBetweenRec 1 2 5) false)
+
+(define (isBetweenRec x y z)
+      (cond
+        ((<= y z) (and (>= x y) (<= x z)))
+        (else (isBetweenRec x z y)))) ;NOTE HOW FUNCTION CALLS ITSELF WITH PARAMETERS REVERSED
+
+
+
+;mySum: number---> number
+;purpose: to sum numbers between 0 and n (0,n)
+
+;(define (mySum n) 0)
+(check-expect (mySum 5) 15)
+(check-expect (mySum -5) (error "not valid for negative numbers"))
+(check-expect (mySum 0) 0)
+(check-expect (mySum 1) 1)
+(check-expect (mySum 2) 3)
+(check-expect (mySum 4) 10)
+
+
+; (define (mySum n)
+;   (cond
+;     ((not(integer? n)) ...)
+;     ((< n 0)....)
+;     ((= n 0)....)
+;     (else (... (mySum(- n 1 )...)
+
+(define (mySum n)
+  (cond
+  ((not (integer? n)) (error "not valid for non-integers"))
+  ((< n 0) (error "not valid for negative numbers"))
+  ((= n 0) 0) ;termination case
+  (else (+ n (mySum(- n 1 ))))))
+
+(mySum 5)
+(mySum 10)
+(mySum 4)
+; (+ 4 (mySum 3))
+;      (+ 3 (mySum 2))
+;           (+ 2 (mySum 1))
+;                (+ 1 (mySum 0))
+;                        0)))
+
+
+
+;*******************************************************************************  
+; Purpose: returns factorial of given integer (n!= n * n-1 * n-2 * ....* 1)
+; 0! = 1
+; 1! = 1
+; 2! = 2 * 1 = 2
+; 3! = 3 * 2 * 1 = 6
+;Contract: myFactorial : number(n) ---> number(n!)
+;(define (myFactorial n) 0)
+(check-expect (myFactorial 1) 1)
+(check-expect (myFactorial 3) 6)
+(check-expect (myFactorial 3.14) (error "no factorial for non-integers"))
+(check-expect (myFactorial -1) (error "no factorial for negative numbers"))
+
+; (define (myFactorial n)
+; (cond
+; ((not (integer? n)) ...)
+; ((< n 0)...)
+; ((and (>= n 0) (<= n 1)) ...)
+; (else (... (myFactorial (- n 1)...)) 
+; 
+
+
+(define (myFactorial n)
+(cond
+((not (integer? n)) (error "no factorial for non-integers"))
+((< n 0) (error "no factorial for negative numbers"))
+((and (>= n 0) (<= n 1)) 1) ; termination case
+(else (* n (myFactorial (- n 1)))))) ;FUNCTION CALLS ITSELF
+
+;Testing:
+(myFactorial 5)
+; (* 4 (myFactorial 3))
+;      (* 3 (myFactorial 2))
+;           (* 2 (myFactorial 1))
+;                    1)))
+
+                
+
+
+
+;*******************************************************************************  
+;myEven: number ---> boolean
+;purpose: to check whether the given number is even or not
+(check-expect (myEven 5) #false)
+(check-expect (myEven 4) #true)
+(check-expect (myEven 0) #true)
+(check-expect (myEven -5)  (error "not valid for negative numbers"))
+
+
+; (define (myEven n)
+;   (cond
+;     ((not(integer? n)) ...)
+;     ((< n 0)....)
+;     ((= (modulo n 2) 0) ...)
+;     (else ....)
+
+
+(define (myEven n)
+  (cond
+    ((not (integer? n)) (error "not valid for non-integers"))
+    ((< n 0) (error "not valid for negative numbers"))
+    ((= (modulo n 2) 0) #true)
+    (else #false)))
+  
+(define (myEven.v2 n)
+  (if (= (modulo n 2) 0) #true #false))
+
+(define (myEven.v3 n)
+  (= (modulo n 2) 0))
+
+
+(myEven 12)
+(myEven 13)
+(myEven.v2 12)
+(myEven.v2 13)
+(myEven.v3 12)
+(myEven.v3 13)
+
+
+
+
+;**********************************************************************
+;sumEvens: number---> number
+;purpose: to sum even numbers between 0 and n (0,n)
+;(define (sumEvens n) 0)
+(check-expect (sumEvens 4) 6)
+(check-expect (sumEvens 5) 6)
+(check-expect (sumEvens 10) 30)
+(check-expect (sumEvens -5) (error "not valid for negative numbers"))
+(check-expect (sumEvens 0) 0)
+
+
+; (define (sumEvens n)
+;   (cond
+;     ((not(integer? n)) ...)
+;     ((< n 0)....)
+;     ((= n 0)....)
+;     ((odd? n)....)
+;     (else (... (sumEvens(- n 1 )...)
+
+
+(define (sumEvens n)
+  (cond
+  ((not (integer? n)) (error "not valid for non-integers"))
+  ((< n 0) (error "not valid for negative numbers"))
+  ((= n 0) 0)
+  ((myEven n) (+ n (sumEvens (- n 1))))
+  (else (sumEvens (- n 1)))))
+
+  ;(define (sumEvens n)
+  ;(cond
+  ;((not (integer? n)) (error "not valid for non-integers"))
+  ;((< n 0) (error "not valid for negative numbers"))
+  ;((= n 0) 0)
+  ;((odd? n) (sumEvens (- n 1)))
+  ;((= (modulo n 2) 1) (sumEvens (- n 1)))
+  ;((= (remainder n 2) 1) (sumEvens (- n 1)))
+  ;(else (+ n (sumEvens(- n 1 ))))))
+
+(sumEvens 4)
+(sumEvens 5)
+(sumEvens 10)
+
+; (sumEvens 4)
+; (+ 4 (sumEvens 3))
+;      (sumEvens 2)
+;      (+ 2 (sumEvens 1))
+;           (sumEvens 0)
+;               0)
+
+
