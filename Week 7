@@ -1,0 +1,190 @@
+;***********RECURSION********************
+
+;********factorial**********  
+;factorial: Integer -> Integer
+; Purpose: returns factorial of given integer n! = n * n-1 * n-2 ...1
+;(define (factorial n) 0)
+;(check-expect (factorial 1) 1)
+;(check-expect (factorial 3) 6)   ; (* 3 2 1)
+;(check-expect (factorial 3.14) (error "no factorial for non-integers"))
+;(check-expect (factorial -1) (error "no factorial for negative numbers"))
+
+; (define (factorial n)
+; (cond
+; ((not (integer? n)) ...)
+; ((< n 0)...)
+; ((and (>= n 0) (<= n 1)) ...)
+; (else (... (factorial (- n 1)...)) 
+; 
+
+
+(define (factorial n)
+(cond
+((not (integer? n)) (error "no factorial for non-integers"))
+((< n 0) (error "no factorial for negative numbers"))
+((and (>= n 0) (<= n 1)) 1) ;termination case
+(else (* n (factorial (- n 1)))))) ;FUNCTION CALLS ITSELF
+
+(factorial 4)
+(factorial 5)
+(factorial 3)
+; 
+; (* 3 (factorial 2))
+;      (* 2 (factorial 1))
+;               1)
+; 
+; (* 3 ( * 2 1))
+
+
+;****************fibonacci*************
+;fibonacci: integer ---> integer
+;purpose: to find the nth fibonacci number : 1 1 2 3 5 8 13 21 34 55....
+
+;fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)
+;fibonacci(1) = 1
+;fibonacci(2) = 1
+;1 2 3 4 5 6 7  8  9  10 11 12...
+;1 1 2 3 5 8 13 21 34 55....
+;(check-expect (fibonacci 12) 144)
+;(check-expect (fibonacci 24) 46368)
+;(check-expect (fibonacci 3.14) (error "cannot be computed for non-integers"))
+;(check-expect (fibonacci -5) (error "cannot be computed for negative numbers"))
+
+; (define (fibonacci n)
+;             (cond
+;             ((not (integer? n)) ...)
+;                 ((<= n 0)...)
+;                 ((and (>= n 1) (<= n 2)) ...)
+;                 (else (+ (fibonacci (...n...)) (fibonacci (...n....))))))
+; 
+
+
+(define (fibonacci n)
+            (cond
+            ((not (integer? n)) (error "cannot be computed for non-integers"))
+                ((<= n 0) (error "cannot be computed for negative numbers"))
+                ((and (>= n 1) (<= n 2)) 1) ;termination case
+                (else (+ (fibonacci (- n 2)) (fibonacci (- n 1)))))) ; function call itself 
+(fibonacci 1)
+(fibonacci 2)
+(fibonacci 3)
+(fibonacci 4)
+(fibonacci 5)
+; 
+; (+ (fibonacci 3)                                    (fibonacci 4))
+;    (+ (fibonacci 1)        (fibonacci 2))           (+ (fibonacci 2)        (fibonacci 3))
+;    (+     1                      1)                 (+        1             (+ (fibonacci 1)        (fibonacci 2))
+;                                                                             (+     1                     1))
+
+
+
+;(fibonacci 36) ; another solution in the following weeks
+(fibonacci 4) ; 1 1 2 3
+; (fibonacci 5) ; 1 1 2 3 5
+; (+ (fibonacci 3)(fibonacci 4))
+;    (+ (fibonacci 1)(fibonacci 2))   (+ (fibonacci 3) (fibonacci 2))
+;  (+  (+ 1 1) (+ (fibonacci 1)(fibonacci 2)) 1)
+;                        1          1
+
+
+; (fibonacci 4)
+; (+ (fibonacci 3)                             (fibonacci 2))
+;    (+ (fibonacci 2) (fibonacci 1))                 1
+;           1             1
+
+
+
+
+;*********************************debt***********************************************
+;debt: Number Number Integer -> Number
+;purpose: returns the amount of debt after given many months under given interest rate
+;(check-expect (debt 1000 10 2) 1210)
+;(check-expect (debt 1000 10 1) 1100)
+
+; 
+; (define (debt amount interestRate months)
+;   (cond 
+;         ((or (not (integer? months)) (< amount 0) (< interestRate 0) (< months 0)) ...)
+;         ((= months 0) ....)
+;         (else (* 
+;                (debt amount interestRate (...months.. ) ....))
+
+
+(define (debt amount interestRate months)
+  (cond 
+        ((or (integer? months) (< amount 0) (< interestRate 0)
+             (< months 0)) (error "invalid input value"))
+        ((= months 0) amount)
+        (else (* 
+               (debt amount interestRate (- months 1))
+               (/ (+ 100 interestRate) 100)))))
+
+;(debt 1000 10 2)
+;(debt 1000 10 1)
+
+; (debt 1000 10 2)
+; (* (debt 1000 10 1) (/ (+ 100 interestRate) 100)))))
+;    ( * (debt 1000 10 0) (/ (+ 100 interestRate) 100)))))
+;    (*    1000 (/ (+ 100 interestRate) 100)))))
+; (* 1100 (/ (+ 100 interestRate) 100)))))
+; 1210
+
+
+
+
+;********************************************************
+;INTERACTIVE PROGRAM
+;number->square: cw ---> image
+(define (number->square cw)
+  (square cw "solid" "red"))
+
+;reset: cw (WorldState) ke (key event) ---> cw
+(define (reset cw ke)
+  (cond
+  ((string=? ke "s") 100)
+  ;((string=? ke "q") 1)
+  (else cw)))
+
+; ;fifty? : number --> boolean
+; (define (fifty? n)
+;   (= n 50))
+; 
+; ;sub5: number --> number
+; (define (sub5 n)
+;   (- n 5))
+
+
+;WorldState (cw) ---> WorldState(cw)
+(big-bang 100
+    [to-draw number->square] ; cw --> image
+    [on-tick sub1]           ; cw --> cw 
+    [stop-when zero?]        ; cw --> boolean
+    [on-key reset])          ; cw ke --> cw
+
+;*****************************************************
+(define BACKGROUND (empty-scene 200 200))
+(define DOT (circle 3 "solid" "red"))
+;place-dot-at: cw (WorldState) ---> image
+(define (place-dot-at cw)
+  (place-image DOT 50 cw BACKGROUND))
+;stop: cw (CurrentWorld) ke (key event:string) ---> cw
+(define (stop cw ke)
+  (cond
+    ((string=? ke "m") 50)
+    ((string=? ke "s") 100)
+    (else  cw)))
+; CurrentWorld Number Number String -> CurrentWorld
+; places the ball at the x-coordinate if the given me is "button-down" 
+(define (hyper cw x y me)
+  (cond
+    [(string=? "button-down" me) y]
+    [else cw]))
+;cw ---> cw
+(define (main cw)
+  (big-bang cw
+    [on-tick sub1]          ;cw ---> cw
+    [stop-when zero?]       ;cw ---> boolean
+    [to-draw place-dot-at]  ;cw ---> image
+    [on-key stop]           ;cw ke ---> cw
+    [on-mouse hyper]))      ;cw x y me ---> cw
+(main 100)
